@@ -1,6 +1,4 @@
 
-manifest.json:
-
 {
   "manifest_version": 3,
   "name": "XTND Analytics Debugger",
@@ -11,7 +9,7 @@ manifest.json:
   ],
   "background": {
     "service_worker": "background.js",
-    "persistent": true // Keep the background page active
+    "persistent": true 
   },
   "action": {
     "default_popup": "xtnd.html",
