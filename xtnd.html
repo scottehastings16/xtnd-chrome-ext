@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DataLayer Debugger</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>DataLayer Events</h1>
+  <div id="duplicate-warning" style="color: red; display: none;">
+    Warning: Duplicate event detected!
+  </div>
+  <table id="event-table">
+    <thead>
+      <tr>
+        <th>Event Category</th>
+        <th>Event Label</th>
+        <th>Event Action</th>
+        <th>Additional Context 1</th>
+        <th>Additional Context 2</th>
+        <th>Additional Context 3</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    const eventTable = document.getElementById('event-table').getElementsByTagName('tbody')[0];
+    const duplicateWarning = document.getElementById('duplicate-warning');
+    const previousEvents = [];
+
+    function handleDataLayerEvent(event) {
+      if (event.data && event.data.length > 0) {
+        const data = event.data[0];
+        if (data.event === 'experience_event') {
+          const eventData = {
+            event_category: data.event_category,
+            event_label: data.event_label,
+            event_action: data.event_action,
+            additional_context_1: data.data?.additional_context_1,
+            additional_context_2: data.data?.additional_context_2,
+            additional_context_3: data.data?.additional_context_3,
+          };
+
+          // Check for duplicates
+          const eventString = JSON.stringify(eventData);
+          if (previousEvents.includes(eventString)) {
+            duplicateWarning.style.display = 'block';
+          } else {
+            previousEvents.push(eventString);
+          }
+
+          // Add event to table
+          const newRow = eventTable.insertRow();
+          Object.values(eventData).forEach(value => {
+            const newCell = newRow.insertCell();
+            newCell.textContent = value || '';
+          });
+        }
+      }
+    }
+
+    // Inject script to capture dataLayer.push events
+    const script = document.createElement('script');
+    script.textContent = `
+      (function() {
+        const originalPush = window.dataLayer.push;
+        window.dataLayer.push = function(...args) {
+          originalPush.apply(window.dataLayer, args);
+          window.postMessage({ type: 'dataLayerEvent', data: args }, '*');
+        };
+      })();
+    `;
+    document.documentElement.appendChild(script);
+
+    // Listen for messages from injected script
+    window.addEventListener('message', (event) => {
+      if (event.source === window && event.data.type === 'dataLayerEvent') {
+        handleDataLayerEvent(event.data);
+      }
+    });
+  </script>
+</body>
+</html>
