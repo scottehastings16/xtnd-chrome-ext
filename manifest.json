@@ -1,10 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
+  "name": "XTND Analytics Debugger",
   "version": "1.0",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
   "action": {
-    "default_popup": "hello.html",
+    "default_popup": "index.html",
     "default_icon": "xtnd.png"
   }
 }
