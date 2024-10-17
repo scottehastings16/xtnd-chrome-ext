@@ -7,7 +7,7 @@
     "scripting"
   ],
   "action": {
-    "default_popup": "index.html",
+    "default_popup": "xtnd.html",
     "default_icon": "xtnd.png"
   }
 }
