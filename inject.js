@@ -1,7 +1,4 @@
-(function() {
-  const originalPush = window.dataLayer.push;
-  window.dataLayer.push = function(...args) {
-    originalPush.apply(window.dataLayer, args);
-    window.postMessage({ type: 'dataLayerEvent', data: args }, '*');
-  };
-})();
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && /^https?:\/\//i.test(tab.url)) {
+    chrome.scripting.executeScript({
+      target: { tabId: tabId },
