@@ -1,6 +1,5 @@
-
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "XTND Analytics Debugger",
   "version": "1.0",
   "permissions": [
@@ -8,8 +7,7 @@
     "scripting"
   ],
   "background": {
-    "service_worker": "background.js",
-    "persistent": true 
+    "service_worker": "background.js" 
   },
   "action": {
     "default_popup": "xtnd.html",
