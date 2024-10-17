@@ -7,10 +7,10 @@
     "scripting"
   ],
   "background": {
-    "service_worker": "background.js" 
+    "service_worker": "background.js"
   },
   "action": {
     "default_popup": "xtnd.html",
-    "default_icon": "xtnd.png"
+    "default_icon": "xtnd.png" 
   }
 }
