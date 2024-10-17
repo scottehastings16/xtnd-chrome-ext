@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DataLayer Debugger</title>
+  <title>XTND Analytics Debugger</title>
   <style>
     table {
       border-collapse: collapse;
@@ -71,19 +71,6 @@
       }
     }
 
-    // Inject script to capture dataLayer.push events
-    const script = document.createElement('script');
-    script.textContent = `
-      (function() {
-        const originalPush = window.dataLayer.push;
-        window.dataLayer.push = function(...args) {
-          originalPush.apply(window.dataLayer, args);
-          window.postMessage({ type: 'dataLayerEvent', data: args }, '*');
-        };
-      })();
-    `;
-    document.documentElement.appendChild(script);
-
     // Listen for messages from injected script
     window.addEventListener('message', (event) => {
       if (event.source === window && event.data.type === 'dataLayerEvent') {
@@ -93,3 +80,5 @@
   </script>
 </body>
 </html>
+
+
