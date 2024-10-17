@@ -12,3 +12,15 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     });
   }
 });
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'logPush') {
+    chrome.storage.local.get(['pushes'], (result) => {
+      let pushes = result.pushes || [];
+      pushes.push({
+        timestamp: Date.now(),
+        data: request.data
+      });
+      chrome.storage.local.set({ pushes: pushes });
+    });
+  }
+});
