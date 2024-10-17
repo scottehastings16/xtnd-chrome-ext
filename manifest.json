@@ -1,18 +1,26 @@
+Okay, here's the complete manifest.json file for your Data Layer Push Logger extension, including the necessary permissions and placeholders for you to add your target website(s):
+
 {
   "manifest_version": 3,
   "name": "Data Layer Push Logger",
   "version": "1.0",
   "description": "Logs all data layer pushes to a table.",
+
   "permissions": [
     "storage",
     "activeTab",
-    "scripting"
+    "scripting",
+    // Allow access to all Coca-Cola subdomains:
+    "https://*.coca-cola.com/*" 
   ],
+
   "background": {
     "service_worker": "background.js"
   },
+
   "action": {
-    "default_icon": "xtnd.png",
     "default_popup": "popup.html"
   }
 }
+
+
