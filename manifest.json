@@ -10,7 +10,7 @@
     "storage",
     "activeTab",
     "scripting",
-    "https://*.coca-cola.com/*" 
+    "https://www.coca-cola.com/zz/en" 
   ],
 
   "background": {
