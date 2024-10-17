@@ -1,17 +1,14 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "GET_PAGE_DATA") {
-    chrome.tabs.executeScript(sender.tab.id, { file: 'inject.js' }, (results) => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError);
-        sendResponse({ error: "Failed to inject script" });
-        return;
-      }
-      if (results && results[0]) {
-        sendResponse({ data: results[0] });
-      } else {
-        sendResponse({ data: "DATALAYER_NOT_FOUND" });
-      }
+// background.js
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.local.set({ pushes: [] });
+});
+
+// Inject the content script into every page
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete') {
+    chrome.scripting.executeScript({
+      target: { tabId: tabId },
+      files: ['content.js']
     });
-    return true; // Keep the message channel open for async response
   }
 });
