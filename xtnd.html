@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,12 +40,12 @@
     const duplicateWarning = document.getElementById('duplicate-warning');
     const previousEvents = [];
 
-    function handleDataLayerEvent(event) {
-      if (event.data && event.data.length > 0) {
-        const data = event.data[0];
+    function handleDataLayerEvent(request) {
+      if (request.data && request.data.length > 0) {
+        const data = request.data[0];
         if (data.event === 'experience_event') {
           const eventData = {
-            event_category: data.event_category || '', // Add empty string as default
+            event_category: data.event_category || '',
             event_label: data.event_label || '',
             event_action: data.event_action || '',
             additional_context_1: data.data?.additional_context_1 || '',
@@ -66,16 +65,16 @@
           const newRow = eventTable.insertRow();
           Object.values(eventData).forEach(value => {
             const newCell = newRow.insertCell();
-            newCell.textContent = value; 
+            newCell.textContent = value;
           });
         }
       }
     }
 
-    // Listen for messages from injected script
-    window.addEventListener('message', (event) => {
-      if (event.source === window && event.data.type === 'dataLayerEvent') {
-        handleDataLayerEvent(event.data);
+    // Listen for messages from inject.js
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.type === 'dataLayerEvent') {
+        handleDataLayerEvent(request);
       }
     });
   </script>
