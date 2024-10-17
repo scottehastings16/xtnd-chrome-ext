@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,12 +46,12 @@
         const data = event.data[0];
         if (data.event === 'experience_event') {
           const eventData = {
-            event_category: data.event_category,
-            event_label: data.event_label,
-            event_action: data.event_action,
-            additional_context_1: data.data?.additional_context_1,
-            additional_context_2: data.data?.additional_context_2,
-            additional_context_3: data.data?.additional_context_3,
+            event_category: data.event_category || '', // Add empty string as default
+            event_label: data.event_label || '',
+            event_action: data.event_action || '',
+            additional_context_1: data.data?.additional_context_1 || '',
+            additional_context_2: data.data?.additional_context_2 || '',
+            additional_context_3: data.data?.additional_context_3 || ''
           };
 
           // Check for duplicates
@@ -65,7 +66,7 @@
           const newRow = eventTable.insertRow();
           Object.values(eventData).forEach(value => {
             const newCell = newRow.insertCell();
-            newCell.textContent = value || '';
+            newCell.textContent = value; 
           });
         }
       }
@@ -80,5 +81,3 @@
   </script>
 </body>
 </html>
-
-
