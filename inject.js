@@ -2,8 +2,13 @@
   const originalPush = window.dataLayer.push;
   window.dataLayer.push = function(...args) {
     originalPush.apply(window.dataLayer, args);
-    window.postMessage({ type: 'dataLayerEvent', data: args }, '*');
+
+    // Find the extension's tab ID
+    chrome.runtime.sendMessage({ type: 'getTabId' }, (response) => {
+      if (response && response.tabId) {
+        // Send the message to the extension page
+        chrome.tabs.sendMessage(response.tabId, { type: 'dataLayerEvent', data: args });
+      }
+    });
   };
 })();
-
-
